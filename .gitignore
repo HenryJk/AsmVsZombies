@@ -11,3 +11,9 @@ downloader/Release
 downloader/downloader/Debug
 downloader/downloader/Release
 code_association.txt
+
+.idea/
+cmake-build-debug/
+cmake-build-release/
+
+src/main_script.cpp
