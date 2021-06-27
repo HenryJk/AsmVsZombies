@@ -7,8 +7,11 @@
 
 void* Core::main_address = nullptr;
 
-void Core::Click(int x, int y, int key)
-{
+void Core::Init() {
+    Core::main_address = (void *) (*(void **)BASE_ADDRESS);
+}
+
+void Core::Click(int x, int y, int key) {
     __asm__ __volatile__(
     "pushl %0;"
     "pushl %1;"

@@ -5,25 +5,26 @@
 #include <avz.h>
 #include <cstdint>
 
+#include "address.h"
 #include "hook.h"
 #include "memory.h"
 
 void hook::install(Memory &memory) {
-    auto addr = (uintptr_t)memory.Alloc(4096);
+    auto shim = (uintptr_t)memory.Alloc(4096);
     /*
     0x415945:
-    call addr
+    call shim
     */
-    uint8_t call_addr[5];
+    uint8_t call_shim[5];
 
-    // call addr
-    call_addr[0] = 0xe8;
-    (int32_t &)call_addr[1] = addr - (0x415945 + 5);
+    // call shim
+    call_shim[0] = 0xe8;
+    (int32_t &)call_shim[1] = (int32_t)shim - (MAIN_LOOP_CALL_ADDRESS + 5);
 
-    memory.Write(0x415945, sizeof(call_addr), call_addr);
+    memory.Write(MAIN_LOOP_CALL_ADDRESS, sizeof(call_shim), call_shim);
 
     /*
-    addr:
+    shim:
     push ebx
     call _script
     pop ebx
@@ -37,19 +38,19 @@ void hook::install(Memory &memory) {
 
     // call _script
     patch[1] = 0xe8;
-    (int &)patch[2] = (uintptr_t)Script - (addr + 1 + 5);
+    (int &)patch[2] = (uintptr_t)Script - (shim + 1 + 5);
 
     // pop ebx
     patch[6] = 0x5b;
 
     // call 4130d0
     patch[7] = 0xe8;
-    (int &)patch[8] = 0x4130d0 - (addr + 7 + 5);
+    (int &)patch[8] = MAIN_LOOP_FUNC_ADDRESS - (shim + 7 + 5);
 
     // ret
     patch[12] = 0xc3;
 
-    memory.Write(addr, sizeof(patch), patch);
+    memory.Write(shim, sizeof(patch), patch);
 }
 
 void hook::uninstall(Memory &memory) {
@@ -57,11 +58,11 @@ void hook::uninstall(Memory &memory) {
     0x415945:
     call 0x4130d0
     */
-    uint8_t call_addr[5];
+    uint8_t call_shim[5];
 
-    // call addr
-    call_addr[0] = 0xe8;
-    (int &)call_addr[1] = 0x4130d0 - (0x415945 + 5);
+    // call shim
+    call_shim[0] = 0xe8;
+    (int &)call_shim[1] = MAIN_LOOP_FUNC_ADDRESS - (MAIN_LOOP_CALL_ADDRESS + 5);
 
-    memory.Write(0x415945, sizeof(call_addr), call_addr);
+    memory.Write(MAIN_LOOP_CALL_ADDRESS, sizeof(call_shim), call_shim);
 }
