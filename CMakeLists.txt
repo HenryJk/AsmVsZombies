@@ -1,4 +1,5 @@
 # CMakeLists
+project(AsmVsZombies)
 
 cmake_minimum_required (VERSION 3.0)
 
@@ -6,9 +7,11 @@ add_definitions(-std=c++17)
 
 set(CMAKE_CXX_COMPILER "g++")
 
+add_compile_definitions(VERSION_1_0_0_1051)
+
 # build libavz.dll
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin) 
-include_directories(./inc)
+include_directories(include)
 aux_source_directory(./src avz_srcs)
 add_library(avz MODULE ${avz_srcs})
 

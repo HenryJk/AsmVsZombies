@@ -6,14 +6,24 @@
  */
 
 #include "pvzfunc.h"
+#include "address.h"
+#include "core.h"
+#include <iostream>
 
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
 
 void Asm::ClickScene(MainObject *level, int x, int y, int key)
 {
-    if ((*(PvZ **)0x6a9ec0)->gameUi() != 3)
+    if ((*(PvZ **)BASE_ADDRESS)->gameUi() != 3)
     {
+        return;
+    }
+
+    auto main_address = (*(uint32_t**)BASE_ADDRESS)[0x768 / 4];
+    if (Core::main_address != (void*)level) {
+        std::cout << *(uint32_t**)BASE_ADDRESS << std::endl;
+        std::cout << Core::main_address << " " << (void*)level << std::endl;
         return;
     }
 #ifdef __MINGW32__
@@ -22,10 +32,10 @@ void Asm::ClickScene(MainObject *level, int x, int y, int key)
         "pushl %1;"
         "pushl %2;"
         "movl %3, %%ecx;"
-        "movl $0x411f20, %%eax;"
+        "movl %4, %%eax;"
         "calll %%eax;"
         :
-        : "g"(key), "g"(y), "g"(x), "g"(level)
+        : "g"(key), "g"(y), "g"(x), "g"(Core::main_address), "n"(CLICK_SCENE_CALL_ADDRESS)
         : "eax", "ecx");
 #else
     __asm {
@@ -41,17 +51,19 @@ void Asm::ClickScene(MainObject *level, int x, int y, int key)
 
 void Asm::click(MouseWindow *mw, int x, int y, int key)
 {
+    std::cout << "ui-state " << (*(PvZ **)0x6a9ec0)->gameUi() << std::endl;
 #ifdef __MINGW32__
     __asm__ __volatile__(
         "pushl %0;"
         "movl %1, %%ebx;"
         "movl %2, %%eax;"
         "movl %3, %%ecx;"
-        "movl $0x539390, %%edx;"
+        "movl %4, %%edx;"
         "calll %%edx;"
         :
-        : "g"(x), "g"(key), "g"(y), "g"(mw)
-        : "eax", "ecx", "ebx", "edx");
+        : "g"(x), "g"(key), "g"(y), "g"(mw), "n"(CLICK_CALL_ADDRESS)
+        : "eax", "ecx", "ebx", "edx"
+    );
 #else
     __asm {
 		push ebx;

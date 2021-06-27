@@ -11,7 +11,9 @@
 #ifndef __AVZ_H__
 #define __AVZ_H__
 
+#include "address.h"
 #include "avz_compatible.h"
+#include "core.h"
 
 void Script();
 
@@ -47,6 +49,7 @@ uintptr_t addr = 0;
 // call script() instead of game_loop()
 void InstallHook(Memory &memory)
 {
+
 #ifdef __MINGW32__
     addr = (uintptr_t)memory.Alloc(4096);
     /*
@@ -109,36 +112,5 @@ void UninstallHook(Memory &memory)
 #endif
 }
 
-Memory memory;
 
-BOOL APIENTRY DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
-{
-
-    switch (fdwReason)
-    {
-    case DLL_PROCESS_ATTACH:
-        // attach to process
-        // return FALSE to fail DLL load
-        memory.OpenSelf();
-        InstallHook(memory);
-        break;
-
-    case DLL_PROCESS_DETACH:
-        // detach from process
-        AvZ::__Exit();
-        Sleep(10);
-
-        UninstallHook(memory);
-        break;
-
-    case DLL_THREAD_ATTACH:
-        // attach to thread
-        break;
-
-    case DLL_THREAD_DETACH:
-        // detach from thread
-        break;
-    }
-    return TRUE; // succesful
-}
 #endif

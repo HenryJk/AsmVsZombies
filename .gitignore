@@ -4,7 +4,6 @@ release/ahpha
 script/test
 bin/libavz.dll
 /*.cpp
-.clang-format
 downloader/.vs
 downloader/Debug
 downloader/Release
