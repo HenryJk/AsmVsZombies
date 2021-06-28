@@ -2,12 +2,19 @@
 // Created by henryj on 27/6/2021.
 //
 
-#include <avz.h>
 #include <cstdint>
 
 #include "address.h"
 #include "hook.h"
 #include "memory.h"
+#include "pvz/base.h"
+
+#include <iostream>
+
+void Script() {
+    auto base_ptr = *(PvZ::Base **)BASE_PTR_ADDRESS;
+    std::cout << base_ptr->ms_per_frame << ' ' << base_ptr->game_ptr << std::endl;
+}
 
 void hook::install(Memory &memory) {
     auto shim = (uintptr_t)memory.Alloc(4096);
@@ -51,6 +58,11 @@ void hook::install(Memory &memory) {
     patch[12] = 0xc3;
 
     memory.Write(shim, sizeof(patch), patch);
+
+    auto base_ptr = *(PvZ::Base **)BASE_PTR_ADDRESS;
+    std::cout << base_ptr->ms_per_frame << ' ' << base_ptr->game_ptr << std::endl;
+    std::cout << base_ptr << std::endl;
+    std::cout << &base_ptr->ms_per_frame << std::endl;
 }
 
 void hook::uninstall(Memory &memory) {

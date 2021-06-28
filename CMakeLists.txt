@@ -11,9 +11,14 @@ add_compile_definitions(VERSION_1_0_0_1051_EN)
 
 # build libavz.dll
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin) 
-include_directories(include)
+# include_directories(include)
 aux_source_directory(./src avz_srcs)
-add_library(avz MODULE ${avz_srcs})
+add_library(avz MODULE
+        #src/pvz/base.cpp
+        ${avz_srcs}
+)
+target_include_directories(avz PUBLIC include)
+
 
 # build injector.exe
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
