@@ -66,20 +66,20 @@
 ││ ├─28\\zombie state
 ││ ├─2C\\[floating point] abscissa
 ││ ├─30\\[floating point] ordinate
-││ ├─34\\[floating point][2C] change amount (advance speed of the advancing dance king and decelerating ice truck)
+││ ├─34\\[float] animation speed (direct movement speed for zomboni and disco, otherwise don't have any effect when changed manually)
 ││ ├─38\\ keep increasing until the value greater than [40]*[44] returns to 0
-││ ├─3C\\ Initial value range of countdown for zombie shouting brians [500,1500)
+││ ├─3C\\ Initial value range of countdown for zombie shouting brains [500,1500)
 ││ ├─51\\[logical value] true when nibbling
 ││ ├─54\\Zombie flash countdown
 ││ ├─60\\zombies existed time
-││ ├─64\\zombie movement status
-││ ├─68\\ attribute countdown
+││ ├─64\\zombie movement status (6 climbing ladder, 7 dropping after ladder, the rest unknown)
+││ ├─68\\ ability countdown (used by disco, pogo, bungee, catapult, jack)
 ││ ├─6C\\ standing state, stand still at -2/-3, up at -4 (for zombies in the card interface)
 ││ ├─70\0 when the snowman can not drop diamonds
-││ ├─74\\Countdown to the disappearance of zombies
-││ ├─7C\\ where the ladder is located
-││ ├─80\\ where the bungee zombies are located
-││ ├─84\\[floating point][30] change amount (jumping process of jumping)
+││ ├─74\\ Countdown to the disappearance of zombies
+││ ├─7C\\ column where the ladder is located
+││ ├─80\\ column where the bungee zombies are located
+││ ├─84\\[floating point][30] change amount (used by pogo)
 ││ ├─8C\\ abscissa of shot determination
 ││ ├─90\\ The ordinate of the shot determination
 ││ ├─94\\ horizontal width determined by shot
@@ -93,33 +93,30 @@
 ││ ├─B4\\Freeze countdown
 ││ ├─B8\\[logical value] is true if charmed
 ││ ├─B9\\[logical value] is true when blown away
-││ ├─BA\\[logical value] is true if it is near death
+││ ├─BA\\[logical value] ??? if false then slowly losing health
 ││ ├─BB\\[logical value] true if the hand is not broken
-││ ├─BC\\[logical value] There is a hand-held object, and the snowman walks to the left to be true
+││ ├─BC\\[logical value] There is a hand-held object (used by pole-vault, pogo, digger, yeti, gargantuar)
 ││ ├─BD\\[logical value] is true in water
 ││ ├─BE\\[1byte] Follow the shadow when going up the ladder
 ││ ├─BF\\[logical value] true if you eat garlic
 ││ ├─C0\\Countdown after eating garlic
-││ ├─C4\\1 type jewelry (0 no 1 barricade 2 iron barrel 3 rugby 4 miner's hat 7 sled car 8 nuts 9 high nuts)
+││ ├─C4\\1 type jewelry (0 no, 1 cone, 2 bucket, 3 rugby, 4 miner's hat, 7 sled car, 8 nuts, 9 high nuts)
 ││ ├─C8\\Current body HP
 ││ ├─CC\\ body upper limit
 ││ ├─D0\\1 type jewelry current HP
 ││ ├─D4\\1 type jewelry HP limit
-││ ├─D8\\2 type jewelry
+││ ├─D8\\2 type jewelry (0 none, 1 screen door, 2 newspaper, 3 ladder, 4 pickaxe)
 ││ ├─DC\\2 category jewelry current HP
 ││ ├─E0\\2 type jewelry upper limit of HP
 ││ ├─E4\\balloon HP
 ││ ├─E8\\balloon HP limit
 ││ ├─EC\\[logical value] is true if it disappears
-││ ├─F0\\Sledding team leader zombie number
-││ ├─F4\\The second zombie number of the sled team
-││ ├─F8\\The third zombie number of the sled team
-││ ├─FC\\'s fourth zombie number in the sled team
+││ ├─F0\\[int[4]] bobsled team leader have ID of other 3 bobsled team starting at offset 1, non-leader have only leader ID at offset 0
 ││ ├─110\\ The number of the attachment of the bullet attacked animation
 ││ ├─114\\Zombie King puts zombies countdown, the remaining basketball
 ││ ├─118\\Zombie animation number
-││ ├─11C\\ size
-││ ├─120\\[floating point][+84] change amount (jumping process of jumping)
+││ ├─11C\\[float] size
+││ ├─120\\[floating point][+84] change amount (jumping process of jumping) ??? unused?
 ││ ├─ 124 \ \ Motion speed of the dead king
 ││ ├─128\\Plant in the bungee hand
 ││ ├─12C\\ Whether the dead king smashed the car
@@ -154,43 +151,44 @@
 ││ ├─44\\High blood limit
 ││ ├─48\\ is 1, you can attack
 ││ ├─4C\\ countdown to disappearance of clover
-││ ├─50\\ Ashes ice core clover countdown to take effect
-││ ├─54\\Attribute countdown
-││ ├─58\\Launch bullets\Countdown to production items
-││ ├─5C\\ firing bullets\ production item time interval
-││ ├─80\\The abscissa of the cannon quasi-center -47
-││ ├─84\\The ordinate of the center of the gun
-││ ├─88\\'s line
+││ ├─50\\ explosion countdown (cherry, ice, doom, jalapeno, coffee)
+││ ├─54\\Attribute countdown (used for chomper, cob cannon, spikeweed, spikerock, grave buster, potato mine, magnets, squash, imitater)
+││ ├─58\\Launch bullets\Countdown to production items (used by sunflower, marigold, all shooter plant, for shooters bullet created after [90] countdown)
+││ ├─5C\\ firing bullets\ production item time interval (actual interval is a bit RNG)
+││ ├─80\\ cob cannon target xpos (center-47)
+││ ├─84\\ cob cannon target ypos (center)
+││ ├─88\\'s line (same as 1C)
 ││ ├─8C\\ particle system number (large spray mushroom and melancholic mushroom spray, garden plants glow)
-││ ├─90\\ bullet launch countdown
+││ ├─90\\ bullet launch countdown (used by shooting plant and cob cannon, bullet created on 0)
 ││ ├─94\\Plant animation number
 ││ ├─98\\Plant animation number 2
 ││ ├─9C\\ The animation number of the middle head of the three-line shooter
 ││ ├─A0\\The animation number of the lower head of the three-line shooter
 ││ ├─A4\\ blink animation number
-││ ├─A8\\Tube lightning flashing light animation number
+││ ├─A8\\ potato lightning flashing light animation number
 ││ ├─AC \ \ Mushroom sleeping animation number
 ││ ├─B0\\ blink countdown
-││ ├─B4 \ \ been eating 50cs Countdown
+││ ├─B4 \\ unknown countdown, set back to 50 every 4 tick when zombie is biting it
 ││ ├─B8 \ \ Luminous countdown
 ││ ├─BC\\Flash countdown
 ││ ├─C0\\[floating point] image offset coordinate to the right
 ││ ├─C4\\[floating point] image offset coordinate downward
-││ ├─C8\\[floating point] abscissa of absorbent articles
-││ ├─CC\\[floating point] ordinate of absorbent articles
-││ ├─D0\\[floating point] the lateral offset of the target position of the absorbent article
-││ ├─D4\\[floating point] the longitudinal offset of the target position of the absorbent article
+││ ├─C8\\[floating point] abscissa of absorbent articles (used by magnet-shroom)
+││ ├─CC\\[floating point] ordinate of absorbent articles (used by magnet-shroom)
+││ ├─D0\\[floating point] the lateral offset of the target position of the absorbent article (used by magnet-shroom)
+││ ├─D4\\[floating point] the longitudinal offset of the target position of the absorbent article (used by magnet-shroom)
 ││ ├─D8\\Magnetic mushroom sucking item type, the first item absorbed by the magnet
 ││ ├─DC~128\\The remaining 4 items absorbed by the magnet
-││ ├─130\\ mushroom countdown
+││ ├─130\\ mushroom wakeup countdown (after getting coffee)
 ││ ├─134\\1 is invisible and can be bitten, 2 is not
+││ ├─138\\ Imitater type (used by imitater to mark the plant it is transforming into)
 ││ ├─13C\\ direction -1 is right, 1 is left
 ││ ├─140\\[1 byte] Conversion between 0 and 1
 ││ ├─141\\[logical value]true means the plant disappears
 ││ ├─142\\[logical value]true means the plant is squashed
 ││ ├─143\\[logical value]true means the plant falls asleep
-││ ├─144\\[logical value]true, plants can shine
-││ ├─145\\[logical value]true, the plant is bright
+││ ├─144\\[logical value]true, plants can shine (??? zen garden related?)
+││ ├─145\\[logical value]true, the plant is flashing
 ││ └─148\\plant number
 │├┬─B0\\Maximum number of plants
 ││├─B4\\Maximum number of plants
@@ -217,7 +215,7 @@
 ││ ├─48\\[floating point][44] delta
 ││ ├─4C\\[floating point] shadow Y coordinate
 ││ ├─50\\[logical value] true if the bullet disappears
-││ ├─58\\exercise method
+││ ├─58\\ movement type
 ││ ├─5C\\ bullet type
 ││ ├─60\\existence timing
 ││ ├─64\\ self-decrement countdown
@@ -259,7 +257,7 @@
 ││ ├─4C\\ Item existence time
 ││ ├─50\\[logical value]true is collected
 ││ ├─54\\ disappearing timing
-││ ├─58\\Item type
+││ ├─58\\Item type (1 = silver, 2 = gold, 3 = diamond, 4 = sun, 5 = small sun, 6 = big sun, 7 = ???, 8 = trophy, 9 = shovel, 10 = almanac, 11 = car key, 12 = vase trophy ???, 16 = seed packet, 17 zen garden plant)
 ││ ├─5C\\ Item movement status
 ││ ├─60\\ Animation attachment number
 ││ ├─68\\plant card type
@@ -295,14 +293,14 @@
 ││├─114\\The last trolley number
 ││└┬118\\Text pointer
 ││ └─0\\lawnmowers
-│├─┬11C\\Venue item attributes (+EC next)
+│├─┬11C\\Venue item attributes (+EC next) (grave=1, crater=2, ladder=3, rake=11, brain=12 (for i, zombie), vase)
 ││ ├─0\\[pointer]=base address
 ││ ├─4\\[pointer]=current game information and objects
 ││ ├─8\\type
 ││ ├─C\\ jar type (3,4,5)
 ││ ├─10\\ number of columns
 ││ ├─14\\ number of rows
-││ ├─18\\The amount of the tombstone, the countdown to the disappearance of the crater, the amount of brain blood, the countdown to the disappearance of the nail palladium
+││ ├─18\\The amount of the tombstone, the countdown to the disappearance of the crater, the amount of brain hp, the countdown to the disappearance of the rake
 ││ ├─1C\\Layer
 ││ ├─20\\[logical value]true will disappear
 ││ ├─24\\[floating point] snail X coordinate
@@ -336,7 +334,7 @@
 ││ ├─24\\The position of the plant on the mouse in the card slot
 ││ ├─28\\Card serial number on the mouse
 ││ ├─2C\\ imitator card serial number
-││ └─30\\Hand-held items
+││ └─30\\ Cursor held item (0=empty, 1=plant, 2=sprout(zen garden), 6=shovel, 8=cob-cannon, 9=watering can, 10 = fertilizer)
 │├─┬13C\\Mouse extra attributes
 ││ ├─0\\[pointer]=base address
 ││ ├─4\\[pointer]=current game information and objects
@@ -358,28 +356,28 @@
 ││ ├─10\\horizontal judgment
 ││ ├─18\\[logical value]false means the card slot is invisible
 ││ ├─24\\ number of cells
-││ ├The following is the card attribute +50 next grid
-││ ├─4\\[pointer]=base address
-││ ├─8\\[pointer]=current game information and objects
-││ ├─C\\ card X coordinate
-││ ├─10\\ card Y coordinate
-││ ├─14\\ Card judgment width
-││ ├─18\\ Card Judgment Height
-││ ├─1C\\[logical value]false, the card is invisible
-││ ├─28\\cooling time
-││ ├─2C\\ total cooling time
-││ ├─30\\card serial number
-││ ├─34\\ Card position in the conveyor belt
-││ ├─38\\Card slot content
-││ ├─3C\\imitator content
-││ ├─40\\Slot machine stop countdown
-││ ├─44\\The content transferred from the slot machine
-││ ├─48\\[floating point] slot machine rotation position
-││ ├─4C\\[logical value]false is not available
-││ ├─4D\\[logical value]true will light up when selected
-││ └─50\\Number of times the card slot has been used
+││ ├The following is the card attribute +50 next grid starting from 28
+││ ├─0\\[pointer]=base address
+││ ├─4\\[pointer]=current game information and objects
+││ ├─8\\ card X coordinate
+││ ├─C\\ card Y coordinate
+││ ├─10\\ Card judgment width
+││ ├─14\\ Card Judgment Height
+││ ├─18\\[logical value]false, the card is invisible
+││ ├─24\\cooling time (this number counting up instead of counting down)
+││ ├─28\\ total cooling time
+││ ├─2C\\card serial number
+││ ├─30\\ Card position in the conveyor belt
+││ ├─34\\Card slot content
+││ ├─38\\imitator content
+││ ├─3C\\Slot machine stop countdown
+││ ├─40\\The content transferred from the slot machine
+││ ├─44\\[floating point] slot machine rotation position
+││ ├─48\\[logical value]false is not available
+││ ├─49\\[logical value]true will light up when selected
+││ └─4C\\Number of times the card slot has been used
 │├──148\\Menu[Button] attribute
-│├─┬14C\\LS[button] attribute
+│├─┬14C\\Last Stand[button] attribute
 ││ ├─0\\[pointer]=base address
 ││ ├─8\\X coordinate
 ││ ├─C\\Y coordinate
@@ -394,6 +392,7 @@
 ││ ├─98\\Maximum text length
 ││ └─F9\\logical value] invisible is true
 │├──150\\[logical value]true, the mouse does not display the hand shape
+│├──154\\Pointer to mangled strings
 │├─┬15C\\ Card interface attributes
 ││ ├─0\\[pointer]=base address
 ││ ├─8\\ Horizontal shift of the screen
@@ -416,7 +415,7 @@
 ││ ├─60\\ level process
 ││ └─6C\\ rounds of level
 │├──164\\[logical value]true to pause the game
-│├──168~23C\\scene grid type
+│├──168~23C\\scene terrain type (1=land, 2=unsodded, 3=water)
 │├──240~314\\The shape of the fog
 │├──4C8~5C0\\The concentration of fog
 │├──5D0\\[floating point] dense fog offset, clover fog distance
@@ -448,7 +447,7 @@
 │├──5594\\HP that reaches the refresh condition
 │├──5598\\ total blood volume of this wave
 │├──559C\\ Countdown to the next wave of zombies
-│├──55A0\\The initial value of the next wave of zombies countdown
+│├──55A0\\The initial value of the next wave of zombies countdown (not predicting future wave initial countdown)
 │├──55A4\\ Big wave of zombie refresh countdown
 │├──55EC\\ 41 when there is a red letter
 │├──55F1\\[logical value]true when there is a shovel

@@ -4,17 +4,26 @@
 
 #include <cstdint>
 
-#include "address.h"
 #include "hook.h"
 #include "memory.h"
-#include "pvz/base.h"
+#include "pvz.h"
 
 #include <iostream>
+#include <cmath>
+
+#include "global.h"
+
+int tick_counter = 0;
 
 void Script() {
-    auto base_ptr = *(PvZ::Base **)BASE_PTR_ADDRESS;
-    std::cout << base_ptr->ms_per_frame << ' ' << base_ptr->game_ptr << std::endl;
+    tick_counter++;
+    std::cout << global::base_ptr << std::endl;
+    if (tick_counter < 800) return;
+    if (tick_counter % 100) return;
+    pvz::Click(300, 300, 1);
 }
+
+
 
 void hook::install(Memory &memory) {
     auto shim = (uintptr_t)memory.Alloc(4096);
@@ -58,11 +67,7 @@ void hook::install(Memory &memory) {
     patch[12] = 0xc3;
 
     memory.Write(shim, sizeof(patch), patch);
-
-    auto base_ptr = *(PvZ::Base **)BASE_PTR_ADDRESS;
-    std::cout << base_ptr->ms_per_frame << ' ' << base_ptr->game_ptr << std::endl;
-    std::cout << base_ptr << std::endl;
-    std::cout << &base_ptr->ms_per_frame << std::endl;
+    global::base_ptr = *(pvz::Base **)BASE_PTR_ADDRESS;
 }
 
 void hook::uninstall(Memory &memory) {

@@ -1,0 +1,4 @@
+1. When next wave hp threshold reached, wave respawn timer is set to 200 tick.
+2. Huge wave have extra 750 tick timer after initial 200 tick refresh wave
+3. Cannon when clicked will prevent another click near it (100 pixel distance) for 30 tick (debounce)
+4. Disco zombie have summoning cooldown of 200 tick

@@ -41,11 +41,11 @@ bool Process::OpenByWindow(const wchar_t *class_name, const wchar_t *window_name
 
 	auto address = ReadMemory<uintptr_t>(0x6a9ec0);
 	auto game_ui = ReadMemory<int>(address + 0x7fc);
-	while (game_ui == 2 || game_ui == 3)
-	{
-		MessageBoxW(NULL, L"检测到游戏窗口在选卡或战斗界面，这种行为可能会导致注入失败，请在游戏主界面进行注入", L"Warning", MB_ICONWARNING);
-		game_ui = ReadMemory<int>(address + 0x7fc);
-	}
+//	while (game_ui == 2 || game_ui == 3)
+//	{
+//		MessageBoxW(NULL, L"检测到游戏窗口在选卡或战斗界面，这种行为可能会导致注入失败，请在游戏主界面进行注入", L"Warning", MB_ICONWARNING);
+//		game_ui = ReadMemory<int>(address + 0x7fc);
+//	}
 
 	return hwnd != nullptr;
 }
@@ -56,7 +56,7 @@ void Process::ManageDLL()
 
 	PCWSTR libavz_path_name = L"C:/ProgramData/PopCap Games/PlantsVsZombies/userdata/libavz.dll";
 
-	if (!CopyFileW(L"libavz.dll", libavz_path_name, false))
+	if (!CopyFileW(L"libavz_1_0_0_1051_en.dll", libavz_path_name, false))
 	{
 		MessageBoxW(NULL, L"libavz.dll 复制失败，请检查 injector.exe 路径下是否有文件 libavz.dll，此类错误是由于编译器没有生成 libavz.dll 导致，即根本原因是脚本语法出错，请到 VSCode 的右下拉动窗口中的 \"终端(terminal)\" 项查看编译器提示的语法错误，如果不知道如何查看错误请查看 AvZ 视频教程中的 \"VSCode 配置\" 分 P", L"Error", MB_ICONERROR);
 		return;
