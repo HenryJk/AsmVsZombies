@@ -1,0 +1,3 @@
+C:\Users\henryj\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\211.7442.42\bin\cmake\win\bin\cmake.exe -E rm -f CMakeFiles\avz.dir/objects.a
+C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\ar.exe cr CMakeFiles\avz.dir/objects.a @CMakeFiles\avz.dir\objects1.rsp
+g++ -g -shared -o ..\bin\libavz.dll -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\avz.dir/objects.a -Wl,--no-whole-archive @CMakeFiles\avz.dir\linklibs.rsp
