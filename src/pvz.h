@@ -192,8 +192,24 @@ namespace pvz {
         OF(uint32_t game_status,                    BASE_GAME_STATUS_OFFSET);
         OF(bool free_planting_mode,                 BASE_FREE_PLANTING_MODE_OFFSET);
     );
-    // clang-format on
 
-    void Click(uint32_t x, uint32_t y, uint32_t key);
+
+    inline void ClickBattlefield(uint32_t x, uint32_t y, uint32_t key, Game *game_ptr) {
+        asm volatile(
+            "pushl %0;"
+            "pushl %1;"
+            "pushl %2;"
+            "movl %3, %%ecx;"
+            "movl $0x411f20, %%eax;"
+            "calll *%%eax;"
+            :
+            : "g"(key), "g"(y), "g"(x), "g"(game_ptr)
+            : "eax", "ecx", "esp"
+        );
+    }
+
+
+
+    // clang-format on
 }// namespace PvZ
 

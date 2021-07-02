@@ -5,24 +5,8 @@
 #include <cstdint>
 
 #include "hook.h"
-#include "memory.h"
-#include "pvz.h"
-
-#include <iostream>
-#include <cmath>
-
-#include "global.h"
-
-int tick_counter = 0;
-
-void Script() {
-    tick_counter++;
-    std::cout << global::base_ptr << std::endl;
-    if (tick_counter < 800) return;
-    if (tick_counter % 100) return;
-    pvz::Click(300, 300, 1);
-}
-
+#include "reference.h"
+#include "script.h"
 
 
 void hook::install(Memory &memory) {
@@ -54,7 +38,7 @@ void hook::install(Memory &memory) {
 
     // call _script
     patch[1] = 0xe8;
-    (int &)patch[2] = (uintptr_t)Script - (shim + 1 + 5);
+    (int &)patch[2] = (uintptr_t)script::OnTick - (shim + 1 + 5);
 
     // pop ebx
     patch[6] = 0x5b;
@@ -67,7 +51,7 @@ void hook::install(Memory &memory) {
     patch[12] = 0xc3;
 
     memory.Write(shim, sizeof(patch), patch);
-    global::base_ptr = *(pvz::Base **)BASE_PTR_ADDRESS;
+    script::OnHook();
 }
 
 void hook::uninstall(Memory &memory) {

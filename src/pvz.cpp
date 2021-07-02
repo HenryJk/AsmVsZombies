@@ -4,7 +4,6 @@
 
 #include <cstdint>
 #include "pvz.h"
-#include "global.h"
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
@@ -165,21 +164,4 @@ enum class pvz::TerrainType: uint32_t {
 
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
-// clang-format off
-
-void pvz::Click(uint32_t x, uint32_t y, uint32_t key) {
-    __asm__ __volatile__(
-        "pushl %0;"
-        "pushl %1;"
-        "pushl %2;"
-        "movl %3, %%ecx;"
-        "movl $0x411f20, %%eax;"
-        "calll %%eax;"
-        :
-        : "g"(key), "g"(y), "g"(x), "g"(global::base_ptr->game_ptr)
-        : "eax", "ecx"
-    );
-}
-
-// clang-format on
 #pragma GCC pop_options
