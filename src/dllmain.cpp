@@ -1,8 +1,6 @@
-#include "Windows.h"
+#include "windows.h"
 #include "hook.h"
 #include "memory.h"
-#include "pvz.h"
-
 
 BOOL APIENTRY DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
     Memory memory;

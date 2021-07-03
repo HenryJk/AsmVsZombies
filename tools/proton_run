@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export STEAM_COMPAT_CLIENT_INSTALL_PATH="$HOME/.local/share/Steam"
+export STEAM_COMPAT_DATA_PATH="$STEAM_COMPAT_CLIENT_INSTALL_PATH/steamapps/compatdata/3590"
+export WINEPREFIX="$STEAM_COMPAT_DATA_PATH/pfx"
+"$STEAM_COMPAT_CLIENT_INSTALL_PATH/steamapps/common/Proton - Experimental/proton" run "$1"

@@ -1,18 +1,7 @@
-
-build
-release/ahpha
-script/test
-bin/libavz.dll
-/*.cpp
-downloader/.vs
-downloader/Debug
-downloader/Release
-downloader/downloader/Debug
-downloader/downloader/Release
-code_association.txt
+.vscode/
 
 .idea/
 cmake-build-debug/
 cmake-build-release/
 
-src/main_script.cpp
+bin/

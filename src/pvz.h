@@ -204,7 +204,7 @@ namespace pvz {
             "calll *%%eax;"
             :
             : "g"(key), "g"(y), "g"(x), "g"(game_ptr)
-            : "eax", "ecx", "esp"
+            : "eax", "ecx"
         );
     }
 
