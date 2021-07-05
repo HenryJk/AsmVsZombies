@@ -8,13 +8,17 @@
 #include <iomanip>
 #include <map>
 #include <utility>
+#include <chrono>
+
+using std::chrono::high_resolution_clock;
+using std::chrono::duration_cast;
+using std::chrono::duration;
+using std::chrono::milliseconds;
 
 namespace {
     pvz::Base *base_ptr;
     int last_launch_tick = 0;
     int tick = 0;
-    bool has_paused = false;
-    bool has_printed = false;
 
     void debug(uint8_t *address, uint32_t length) {
         for (int i = 0; i < length; i++) {
@@ -37,6 +41,9 @@ namespace {
             return;
         }
     }
+
+    auto timing = std::chrono::high_resolution_clock::now();
+    int stage_finished_tick = tick;
 }
 
 void script::OnHook() {
@@ -64,19 +71,19 @@ void script::OnTick() {
         pvz::SelectCard(pregame_ui_ptr, pvz::PlantType::kPumpkin);
         pvz::SelectCard(pregame_ui_ptr, pvz::PlantType::kPuffShroom);
         pvz::LetsRock(pregame_ui_ptr);
+        auto now = std::chrono::high_resolution_clock::now();
+        duration<double, std::milli> ms_double = now - timing;
+        std::cout << ms_double.count() << "ms for " << tick - stage_finished_tick << " tick to finish a stage ("
+            << (tick - stage_finished_tick)/ms_double.count() * 1000 << " tps)" << std::endl;
+        stage_finished_tick = tick;
+        timing = now;
         return;
     }
 
-    if (!has_printed) {
-        for (int i = 0; i < game_ptr->plant_count; i++) {
-            auto &plant = game_ptr->plant_ptr[i];
-            debug((uint8_t *)&plant, PLANT_STRUCT_SIZE);
-        }
-        has_printed = true;
-        return;
-    } else {
-        return;
-    }
+    for (int i = 0; i < game_ptr->zombie_count; i++) game_ptr->zombie_ptr[i].is_visible = false;
+    for (int i = 0; i < game_ptr->plant_count; i++) game_ptr->plant_ptr[i].is_visible = false;
+    for (int i = 0; i < game_ptr->projectile_count; i++) game_ptr->projectile_ptr[i].is_visible = false;
+
 
     std::map<std::pair<int, int>, int> pumpkin_hp;
     for (int i = 4; i <= 6; i++) {
@@ -130,7 +137,7 @@ void script::OnTick() {
             if (required_launch == 2) {
                 pvz::LaunchCob(&plant, 620, 210);
             } else {
-                pvz::LaunchCob(&plant, 620, 465);
+                pvz::LaunchCob(&plant, 620, 485);
             }
             required_launch--;
         }
@@ -150,20 +157,6 @@ void script::OnTick() {
             pvz::ClickBattlefield(game_ptr, 80, 165, 1);
         }
         break;
-    }
-
-    for (int i = 0; i < game_ptr->plant_count; i++) {
-        auto &plant = game_ptr->plant_ptr[i];
-        if (plant.id >> 8 == 0) continue;
-        if (plant.type == pvz::PlantType::kPumpkin) continue;
-        if (plant.hp < plant.max_hp || plant.is_squashed) {
-            debug((uint8_t *)&plant, PLANT_STRUCT_SIZE);
-            base_ptr->ms_per_tick = 200;
-            if (!has_paused) {
-                game_ptr->is_paused = true;
-                has_paused = true;
-            }
-        }
     }
 
 }
