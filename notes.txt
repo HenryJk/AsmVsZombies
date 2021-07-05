@@ -2,3 +2,4 @@
 2. Huge wave have extra 750 tick timer after initial 200 tick refresh wave
 3. Cannon when clicked will prevent another click near it (100 pixel distance) for 30 tick (debounce)
 4. Disco zombie have summoning cooldown of 200 tick
+5. Grid to pixel for pool levels is (80 * col + 80, 85 * row + 145)

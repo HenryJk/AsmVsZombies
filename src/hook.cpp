@@ -4,13 +4,17 @@
 
 #include <cstdint>
 
+#include "cheat.h"
 #include "hook.h"
 #include "reference.h"
 #include "script.h"
 
+namespace {
+    void *shim;
+}
 
 void hook::install(Memory &memory) {
-    auto shim = (uintptr_t)memory.Alloc(4096);
+    shim = memory.Alloc(4096);
     /*
     0x415945:
     call shim
@@ -18,8 +22,8 @@ void hook::install(Memory &memory) {
     uint8_t call_shim[5];
 
     // call shim
-    call_shim[0] = 0xe8;
-    (int32_t &)call_shim[1] = (int32_t)shim - (MAIN_LOOP_CALL_ADDRESS + 5);
+    call_shim[0] = '\xE8';
+    (uint32_t &)call_shim[1] = (uint32_t)shim - (MAIN_LOOP_CALL_ADDRESS + 5);
 
     memory.Write(MAIN_LOOP_CALL_ADDRESS, sizeof(call_shim), call_shim);
 
@@ -38,19 +42,19 @@ void hook::install(Memory &memory) {
 
     // call _script
     patch[1] = 0xe8;
-    (int &)patch[2] = (uintptr_t)script::OnTick - (shim + 1 + 5);
+    (uint32_t &)patch[2] = (uintptr_t)script::OnTick - ((uint32_t)shim + 1 + 5);
 
     // pop ebx
     patch[6] = 0x5b;
 
     // call 4130d0
     patch[7] = 0xe8;
-    (int &)patch[8] = MAIN_LOOP_FUNC_ADDRESS - (shim + 7 + 5);
+    (uint32_t &)patch[8] = MAIN_LOOP_FUNC_ADDRESS - ((uint32_t)shim + 7 + 5);
 
     // ret
     patch[12] = 0xc3;
 
-    memory.Write(shim, sizeof(patch), patch);
+    memory.Write((uint32_t)shim, sizeof(patch), patch);
     script::OnHook();
 }
 
@@ -66,4 +70,6 @@ void hook::uninstall(Memory &memory) {
     (int &)call_shim[1] = MAIN_LOOP_FUNC_ADDRESS - (MAIN_LOOP_CALL_ADDRESS + 5);
 
     memory.Write(MAIN_LOOP_CALL_ADDRESS, sizeof(call_shim), call_shim);
+    cheat::RemoveAllCheats();
+    memory.Free(shim);
 }

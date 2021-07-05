@@ -397,8 +397,8 @@
 ││ ├─0\\[pointer]=base address
 ││ ├─8\\ Horizontal shift of the screen
 ││ ├─2C\\true then select the card to end and start the game
-││ ├─34\\[logical value]false, the card interface is invisible
-││ └─35\\[logical value]true will generate zombies in the card selection interface
+││ ├─34\\[logical value]false, the card interface is invisible (no effect when changed)
+││ └─35\\[logical value]if switched to false, will generate additional zombie during card selection and switch back to true immediately
 │├─┬160\\ Bejeweled attributes
 ││ ├─0\\[pointer]=base address
 ││ ├─4\\[pointer]=current game information and objects
@@ -447,7 +447,7 @@
 │├──5594\\HP that reaches the refresh condition
 │├──5598\\ total blood volume of this wave
 │├──559C\\ Countdown to the next wave of zombies
-│├──55A0\\The initial value of the next wave of zombies countdown (not predicting future wave initial countdown)
+│├──55A0\\The initial value of [559C]
 │├──55A4\\ Big wave of zombie refresh countdown
 │├──55EC\\ 41 when there is a red letter
 │├──55F1\\[logical value]true when there is a shovel
@@ -498,7 +498,9 @@
 │├─C0\\The ordinate of the pea shooter plant card moved to this time
 │├─C4\\The corresponding plant of the Pea Archer Plant Card
 │├─C8\\ mobile state (0 moves to the card slot, 1 is in the card slot, 2 is moved down the card slot, 3 is in the card selection interface)
-│└─Whether DC\\ is Crazy Dave’s choice
+│├─D8\\ imitater type (-1 if not selected)
+│├─DC\\ is Crazy Dave’s choice
+│└─D24\\ next seed slot index
 ├─7F8\\ level number
 ├─7FC\\Game status
 ├─814\\[logical value]true to open the free planting mode
