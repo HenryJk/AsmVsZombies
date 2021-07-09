@@ -5,8 +5,11 @@
 #pragma once
 
 #include "memory.h"
+#include "pvz.h"
 
 namespace hook {
-    void install(Memory &memory);
-    void uninstall(Memory &memory);
+    void Install();
+    void RegisterOnTickHandler(void (*handler)(pvz::Game *));
+    void RegisterOnZombieCreatedHandler(void (*handler)(pvz::Zombie *));
+    void Uninstall(Memory &memory);
 }

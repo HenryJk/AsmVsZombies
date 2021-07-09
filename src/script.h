@@ -4,7 +4,11 @@
 
 #pragma once
 
+#include "pvz.h"
+
 namespace script {
     void OnHook();
-    void OnTick();
+    void OnTick(void (*handler)(pvz::Game *));
+    void OnZombieCreated(void (*handler)(pvz::Zombie *));
+    void OnZombieDestroyed(void (*handler)(pvz::Zombie *));
 }

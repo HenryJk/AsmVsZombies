@@ -13,6 +13,7 @@
 #define LAUNCH_COB_FUNC_ADDRESS                         0x466D50
 #define LETS_ROCK_FUNC_ADDRESS                          0x486D20
 #define CLICK_SCREEN_FUNC_ADDRESS                       0x539390
+#define ON_ZOMBIE_CREATED_INJECTION_ADDRESS             0x524038
 #define BASE_PTR_ADDRESS                                0x6A9EC0
 
 #define NO_DROP_CHEAT_ADDRESS                           0x41D025
@@ -81,6 +82,7 @@
 #define ZOMBIE_YPOS_OFFSET                              0x30
 #define ZOMBIE_ANIMATION_SPEED_OFFSET                   0x34
 #define ZOMBIE_IS_BITING_OFFSET                         0x51
+#define ZOMBIE_AGE_OFFSET                               0x60
 #define ZOMBIE_MOVEMENT_STATUS_OFFSET                   0x64
 #define ZOMBIE_ABILITY_COUNTDOWN_OFFSET                 0x68
 #define ZOMBIE_BUNGEE_TARGET_COLUMN_OFFSET              0x80
