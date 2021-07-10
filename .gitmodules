@@ -1,0 +1,3 @@
+[submodule "external/PvZLib"]
+	path = external/PvZLib
+	url = https://github.com/HenryJk/PvZLib.git
