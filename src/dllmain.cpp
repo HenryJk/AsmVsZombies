@@ -38,6 +38,8 @@ void OnFrame(IDirect3DDevice7 *d3d_device) {
     for (int i = 0; i < game.plant_count; i++) {
         auto &plant = game.plant_ptr[i];
         if (plant.id >> 16 == 0) continue;
+        if (plant.is_squashed) continue;
+        if (plant.is_disappearing) continue;
         switch (plant.type) {
             case pvz::PlantType::kPumpkin:
                 pumpkins.push_back(&plant);
@@ -45,6 +47,7 @@ void OnFrame(IDirect3DDevice7 *d3d_device) {
             case pvz::PlantType::kLilyPad:
             case pvz::PlantType::kFlowerPot:
                 bottom_plants.push_back(&plant);
+                break;
             default:
                 middle_plants.push_back(&plant);
         }
