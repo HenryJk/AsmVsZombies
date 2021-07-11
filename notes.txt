@@ -1,0 +1,1 @@
+EndScene is at D3DIM700.Direct3DCreateDevice + DC0
