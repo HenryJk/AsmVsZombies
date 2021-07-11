@@ -152,16 +152,17 @@ void OnTick(pvz::Game *game_ptr) {
         if (zombie.id >> 16 == 0) continue;
         if (zombie.type != pvz::ZombieType::kBalloonZombie) continue;
         if (zombie.xpos > 150) continue;
-        auto &seed_bank = *game_ptr->seed_bank_ptr;
-        for (int j = 0; j < seed_bank.slot_count; j++) {
-            auto &slot = seed_bank.slot[j];
-            if (slot.type != pvz::PlantType::kBlover) continue;
-            game_ptr->Click(slot.xpos + slot.width / 2, slot.ypos + slot.height / 2, 1);
-            game_ptr->Click(80, 165, 1);
-        }
+        auto &seed_bank = *game_ptr->seed_bank_ptr;\
+        game_ptr->Click(0, 0, -1);
+        SelectSeed(pvz::PlantType::kBlover);
+        game_ptr->Click(80, 145, 1);
         break;
     }
 
+}
+
+void OnHit(pvz::Projectile *projectile_ptr, pvz::Zombie *zombie_ptr) {
+    projectile_ptr->type = pvz::ProjectileType::kCob;
 }
 
 
@@ -173,9 +174,10 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
             pvz::EnableAutoCollect();
             pvz::EnableAutoCollect();
             base_ptr = &pvz::Base::GetInstance();
-            base_ptr->ms_per_tick = 0;
-            pvz::RegisterOnTickHook(OnTick);
+            base_ptr->ms_per_tick = 10;
+//            pvz::RegisterOnTickHook(OnTick);
 //            pvz::RegisterOnZombieCreatedHook(OnZombieSpawn);
+            pvz::RegisterOnProjectileCollideHook(OnHit);
             break;
         case DLL_PROCESS_DETACH:
             base_ptr->ms_per_tick = 10;
