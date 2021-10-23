@@ -14,7 +14,7 @@
 #include <initializer_list>
 #include <cassert>
 
-#include <Windows.h>
+#include <windows.h>
 #include <tlhelp32.h>
 
 #pragma execution_character_set("gbk")
