@@ -38,7 +38,7 @@ void update(pvz::Event *event) {}
 void DrawHealthBar(pvz::Event *event) {
     auto app        = LawnApp::GetInstance();
     auto d3d_device = app.mDDInterface->mD3DInterface->mD3DDevice;
-    auto &board     = *app.mBoard;
+    auto &board     = *(Board *)event->mParams[0];
     auto &plants    = board.mPlants;
     auto &zombies   = board.mZombies;
 
@@ -220,7 +220,7 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
         case DLL_PROCESS_ATTACH:
             //pvz::RegisterOnTickHook(shoot);
             //            Event::InjectEventHandler(EventType::kBoard_UpdateGameObjects, update);
-            Event::InjectEventHandler(EventType::kBoard_DrawGameObjects, DrawHealthBar);
+            Event::InjectEventHandler(EventType::kBoard_DrawGameObjects, nullptr, DrawHealthBar);
 
             ScWndProc = (LRESULT(CALLBACK *)(HWND, UINT, WPARAM, LPARAM)) SetWindowLongPtr(
                     LawnApp::GetInstance().mHWnd, GWL_WNDPROC, (long) NewWndProc);
