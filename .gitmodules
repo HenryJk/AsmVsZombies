@@ -1,4 +1,3 @@
 [submodule "external/PvZLib"]
 	path = external/PvZLib
 	url = git@github.com:HenryJk/PvZLib.git
-	branch = refactor
